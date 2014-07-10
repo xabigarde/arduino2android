@@ -164,6 +164,7 @@ public abstract class BTDeviceThread extends Thread {
 	}
 
 	private void resetConnection() {
+		Log.v(TAG, "resetConnection()");
 		if (_inStream != null) {
 			try {
 				_inStream.close();
@@ -190,6 +191,9 @@ public abstract class BTDeviceThread extends Thread {
 				Log.e(TAG, "Error closing the BT socket");
 				e.printStackTrace();
 			}
+			while(_socket.isConnected()){
+				//Do nothing
+			}
 			_socket = null;
 		}
 	}
@@ -203,7 +207,6 @@ public abstract class BTDeviceThread extends Thread {
 
 		}// end the while loop
 
-		close();
 	}
 
 	/**

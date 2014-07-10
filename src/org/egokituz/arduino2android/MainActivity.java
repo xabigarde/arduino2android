@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
 	//TODO REQUEST_ENABLE_BT is a request code that we provide (It's really just a number that you provide for onActivityResult)
 	private static final int REQUEST_ENABLE_BT = 1;
 
-	Button refreshButton, connectButton, disconnectButton;
+	Button refreshButton, connectButton, disconnectButton,startButton,finButton;
 	Spinner spinnerBluetooth;
 	Button ledOn;
 	TextView tvLdr;
@@ -124,6 +124,24 @@ public class MainActivity extends Activity {
 			}
 		});
 		
+		startButton = (Button) findViewById(R.id.buttonStart);
+		startButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startCommand();
+			}
+		});
+		
+		finButton =(Button) findViewById(R.id.buttonFin);
+		finButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finalizeCommand();
+			}
+		});
+		
 		ledOn = (Button) findViewById(R.id.buttonLedOn);
 		ledOn.setOnClickListener(
 				new OnClickListener() {
@@ -161,6 +179,7 @@ public class MainActivity extends Activity {
 	@Override
 	public void onStop(){
 		Log.v(TAG, "Arduino Activity --OnStop()--");
+		disconnectAduino();
 		super.onStop();
 	}
 
@@ -237,7 +256,7 @@ public class MainActivity extends Activity {
 			arduino.start();
 			ardionoOn = true;
 
-			sendCommandArduino("s");			
+			//sendCommandArduino("s");			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -248,8 +267,9 @@ public class MainActivity extends Activity {
 	 * 
 	 */
 	public void disconnectAduino(){
-		sendCommandArduino("f");
+		//sendCommandArduino("f");
 
+		
 		new Handler().postDelayed(new Runnable(){
 			public void run() {
 				arduino.finalizeThread();
@@ -263,12 +283,16 @@ public class MainActivity extends Activity {
 			}                   
 		}, 1000);
 	}
-
-	/**
-	 * 
-	 */
+	
+	public void startCommand(){
+		sendCommandArduino("s");
+	}
+	public void finalizeCommand(){
+		sendCommandArduino("f");
+	}
 	public void switchLed(){
 		sendCommandArduino("l");
+		//sendCommandArduino("U");
 	}
 
 	/**
